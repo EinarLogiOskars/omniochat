@@ -1,0 +1,66 @@
+services:
+  db:
+    image: postgres:17.5-bullseye
+    environment:
+      - POSTGRES_DB=omniochat
+      - POSTGRES_USER=omnio_user
+      - POSTGRES_PASSWORD=omnio_password
+    healthcheck:
+      # Option A: hard-code values
+      test: ["CMD-SHELL", "pg_isready -U omnio_user -d omniochat -h 127.0.0.1"]
+      # Option B (if you prefer env vars), use:
+      # test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB} -h 127.0.0.1"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: always
+
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama
+    # If you have an NVIDIA GPU, uncomment the following lines and ensure 
+    # NVIDIA drivers + Container Toolkit are installed on host machine.
+      # deploy:
+        # resources:
+          # reservations:
+            # devices:
+            # - driver: nvidia
+              # count: all
+              # capabilities: [gpu]
+    # runtime: nvidia
+    # environment:
+      # - NVIDIA_VISIBLE_DEVICES=all
+      # - NVIDIA_DRIVER_CAPABILITIES=compute,utility
+    volumes:
+      - ollama_data:/root/.ollama
+    ports:
+      - "11434:11434"
+    restart: unless-stopped
+
+  backend:
+    build:
+      context: ./chat-be
+      dockerfile: Dockerfile
+    depends_on:
+      db:
+        condition: service_healthy
+      ollama:
+        condition: service_started
+    restart: always
+
+  webapp:
+    build:
+      context: ./chat-ui
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      backend:
+        condition: service_started
+    restart: always
+
+volumes:
+  postgres_data:
+  ollama_data:

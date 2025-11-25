@@ -1,0 +1,39 @@
+# Dependencies
+node_modules
+npm-debug.log
+yarn-error.log
+pnpm-lock.yaml # only if you're not using pnpm in the container
+
+# Build artifacts
+dist
+build
+coverage
+.nyc_output
+
+# Logs & temp
+*.log
+tmp
+.temp
+.cache
+
+# Environment / secrets
+.env
+.env.local
+.env.*.local
+
+# VCS
+.git
+.gitignore
+.gitattributes
+
+# Editor / OS stuff
+.vscode
+.idea
+.DS_Store
+Thumbs.db
+
+# Frontend / monorepo junk that might live next to backend
+.next
+out
+.storybook
+
