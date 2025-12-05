@@ -1,36 +1,46 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Omniochat UI
 
-## Getting Started
+Neobrutalist chat client for driving a local LLM. Pick a model, stream replies, and manage chats (new, rename, delete) with everything persisted to localStorage.
 
-First, run the development server:
+## Features
+- Model picker (fetched from backend `/api/list`)
+- Streaming chat with auto-scroll when you are at the bottom
+- Sidebar chat list with new/rename/delete actions
+- Chats persisted to `localStorage` and sorted by last updated
+- Mobile-friendly layout with collapsible sidebar
 
+## Prerequisites
+- Node.js 18+ (Next.js 16 / React 19)
+- Backend API reachable at `BASE_API_URL` (defaults to `http://localhost:3001`) with:
+  - `GET /api/list` → `{ models: [{ name: string, ... }] }`
+  - `POST /api/chat` → SSE-style stream of assistant messages
+
+## Setup
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+pnpm install   # or npm install / yarn install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Create `.env.local` if your backend is not on `http://localhost:3001`:
+```
+BASE_API_URL=http://localhost:3001
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Run
+```bash
+pnpm dev       # http://localhost:3000
+pnpm build
+pnpm start
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Project Structure
+- `app/` – layout and pages
+- `components/` – UI pieces (sidebar, chat bubble, dialogs)
+- `context/` – chat selection and stored-chats providers
+- `hooks/` – models, stored chats, chat streaming, mobile detection
+- `lib/api/` – fetch helpers for chat/models
+- `types/` – shared TypeScript types
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Notes
+- New chats are created on the first user message.
+- Delete/Rename operate on local storage; update selection after delete as needed.
+- Streaming parser handles SSE `data:` lines; see `hooks/useChatStream.ts`.
