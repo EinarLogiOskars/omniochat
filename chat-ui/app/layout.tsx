@@ -3,6 +3,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
+import { ChatSelectionProvider } from "@/context/chat-selection-context";
+import { StoredChatsProvider } from "@/context/stored-chats-context";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,10 +30,14 @@ export default function RootLayout({
         <html lang="en">
             <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
                 <SidebarProvider>
-                    <AppSidebar />
-                    <SidebarInset>
-                        {children}
-                    </SidebarInset>
+                  <StoredChatsProvider>
+                    <ChatSelectionProvider>
+                      <AppSidebar />
+                      <SidebarInset>
+                          {children}
+                      </SidebarInset>
+                    </ChatSelectionProvider>
+                  </StoredChatsProvider>
                 </SidebarProvider>
             </body>
         </html>
