@@ -20,6 +20,8 @@ services:
   ollama:
     image: ollama/ollama:latest
     container_name: ollama
+    mem_limit: 12g
+    mem_reservation: 8g
     # If you have an NVIDIA GPU, uncomment the following lines and ensure 
     # NVIDIA drivers + Container Toolkit are installed on host machine.
       # deploy:
