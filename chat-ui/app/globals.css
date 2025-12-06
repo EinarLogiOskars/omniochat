@@ -1,0 +1,183 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --background: oklch(93.46% 0.0305 255.11);
+  --secondary-background: oklch(100% 0 0);
+  --code-background: #e5e7eb;
+  --foreground: oklch(0% 0 0);
+  --main-foreground: oklch(0% 0 0);
+  --main: oklch(67.47% 0.1726 259.49);
+  --border: oklch(0% 0 0);
+  --ring: oklch(0% 0 0);
+  --overlay: oklch(0% 0 0 / 0.8);
+  --shadow: 4px 4px 0px 0px var(--border);
+  --chart-1: #5294FF;
+  --chart-2: #FF4D50;
+  --chart-3: #FACC00;
+  --chart-4: #05E17A;
+  --chart-5: #7A83FF;
+  --chart-active-dot: #000;
+}
+
+.dark {
+  --background: oklch(29.23% 0.0626 270.49);
+  --secondary-background: oklch(23.93% 0 0);
+  --foreground: oklch(92.49% 0 0);
+  --main-foreground: oklch(0% 0 0);
+  --main: oklch(67.47% 0.1726 259.49);
+  --border: oklch(0% 0 0);
+  --ring: oklch(100% 0 0);
+  --shadow: 4px 4px 0px 0px var(--border);
+  --chart-1: #5294FF;
+  --chart-2: #FF6669;
+  --chart-3: #E0B700;
+  --chart-4: #04C86D;
+  --chart-5: #7A83FF;
+  --chart-active-dot: #fff;
+}
+
+@theme inline {
+  --color-main: var(--main);
+  --color-background: var(--background);
+  --color-secondary-background: var(--secondary-background);
+  --color-foreground: var(--foreground);
+  --color-main-foreground: var(--main-foreground);
+  --color-border: var(--border);
+  --color-overlay: var(--overlay);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
+  --spacing-boxShadowX: 4px;
+  --spacing-boxShadowY: 4px;
+  --spacing-reverseBoxShadowX: -4px;
+  --spacing-reverseBoxShadowY: -4px;
+  --radius-base: 5px;
+  --shadow-shadow: var(--shadow);
+  --font-weight-base: 500;
+  --font-weight-heading: 700;
+}
+  
+@layer base {
+  body {
+    @apply text-foreground font-base bg-background;
+  }
+
+  h1, h2, h3, h4, h5, h6{
+    @apply font-heading;
+  }
+}
+
+@layer utilities {
+    .neo-grid {
+        background-image:
+            linear-gradient(#00000010 1px, transparent 1px),
+            linear-gradient(90deg, #00000010 1px, transparent 1px);
+        background-size: 40px 40px;
+    }
+}
+
+@layer components {
+  .markdown-body ul {
+    list-style-type: disc;
+    padding-left: 1.5rem;
+    margin: 0.25rem 0;
+  }
+
+  .markdown-body ol {
+    list-style-type: decimal;
+    padding-left: 1.5rem;
+    margin: 0.25rem 0;
+  }
+
+  .markdown-body pre {
+    background: var(--code-background);
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    overflow-x: auto;
+    margin: 0.75rem 0;
+  }
+
+  .markdown-body code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+      "Liberation Mono", "Courier New", monospace;
+    font-size: 0.9em;
+  }
+
+  .markdown-body :not(pre) > code {
+    background: rgba(0, 0, 0, 0.06);
+    padding: 0.15rem 0.3rem;
+    border-radius: 0.3rem;
+  }
+
+  .markdown-body h1 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin-top: 1rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .markdown-body h2 {
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .markdown-body h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-top: 0.75rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .markdown-body a {
+    color: var(--main);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .dark .markdown-body a {
+    color: var(--chart-1);
+  }
+
+  .markdown-body a:hover {
+    opacity: .7;
+  }
+
+  .markdown-body table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+  }
+
+  .markdown-body th,
+  .markdown-body td {
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    padding: 0.5rem 0.75rem;
+    text-align: left;
+  }
+
+  .markdown-body thead {
+    background: rgba(0, 0, 0, 0.05);
+    font-weight: bold;
+  }
+
+  .markdown-body blockquote {
+    border-left: 4px solid var(--border);
+    background: rgba(0, 0, 0, 0.04);
+    padding: 0.75rem 1rem;
+    margin: 1rem 0;
+    border-radius: 4px;
+  }
+
+}
+
+    

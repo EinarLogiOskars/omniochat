@@ -1,0 +1,59 @@
+name: Build and Push Images
+
+on:
+  pull_request:
+    types: [closed]
+    branches: [main, staging]
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_UI: ghcr.io/einarlogioskars/omniochat/chat-ui
+  IMAGE_BE: ghcr.io/einarlogioskars/omniochat/chat-be
+
+jobs:
+  build-and-push:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+    environment: ${{ github.ref_name == 'main' && 'main' || 'staging' }}
+    env:
+      TAG_SUFFIX: ${{ github.ref_name == 'main' && 'latest' || 'staging' }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build and push chat-ui
+        uses: docker/build-push-action@v5
+        with:
+          context: ./chat-ui
+          file: ./chat-ui/Dockerfile
+          push: true
+          tags: |
+            ${{ env.IMAGE_UI }}:${{ github.sha }}
+            ${{ env.IMAGE_UI }}:${{ env.TAG_SUFFIX }}
+          build-args: |
+            NEXT_PUBLIC_BASE_API_URL=${{ secrets.NEXT_PUBLIC_BASE_API_URL }}
+
+      - name: Build and push chat-be
+        uses: docker/build-push-action@v5
+        with:
+          context: ./chat-be
+          file: ./chat-be/Dockerfile
+          push: true
+          tags: |
+            ${{ env.IMAGE_BE }}:${{ github.sha }}
+            ${{ env.IMAGE_BE }}:${{ env.TAG_SUFFIX }}
