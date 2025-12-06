@@ -1,7 +1,9 @@
 import express, { Request, Response } from 'express';
+import { config } from 'dotenv';
 import { Ollama } from 'ollama';
 import cors from "cors";
 
+config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 app.use(express.json());
@@ -13,7 +15,8 @@ app.use(cors({
 }))
 
 
-const OLLAMA_URL = process.env.OLLAMA_BASE_URL || 'http://host.docker.internal:11434/';
+const OLLAMA_URL = process.env.OLLAMA_BASE_URL || 'http://localhost:11434/';
+console.log(process.env.OLLAMA_BASE_URL);
 const ollama = new Ollama({
     host: OLLAMA_URL,
 });

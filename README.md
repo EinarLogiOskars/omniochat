@@ -6,10 +6,10 @@ Full-stack, neobrutalist chat experience for local LLMs. This repo contains:
 - `docker-compose.yml` – Optional Postgres + Ollama + backend + webapp stack.
 
 ## Stack
-- UI: Next.js 16 (App Router), React 19, Tailwind 4, shadcn/Radix, react-markdown.
-    - See the detailed UI docs in [`chat-ui/README.md`](chat-ui/README.md).
+- UI: Next.js 16 (App Router), React 19, Tailwind 4, shadcn/Radix, react-markdown. See [`chat-ui/README.md`](chat-ui/README.md) for UI details.
 - Backend: Express 5, `ollama` SDK, TypeScript.
 - Infra (optional): Docker Compose with Postgres 17 and Ollama.
+    - Backend details: [`chat-be/README.md`](chat-be/README.md).
 
 ## Quick Start (Docker Compose)
 Requires Docker and (optionally) NVIDIA toolkit if you want GPU for Ollama.
