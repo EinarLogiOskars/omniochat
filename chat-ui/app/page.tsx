@@ -19,7 +19,7 @@ const initialChat: Chat = {
     model: '',
     messages: [],
     stream: true,
-    options: { num_ctx: 8192}
+    options: { num_ctx: 2048 }
 };
 
 export default function Home() {
@@ -40,7 +40,7 @@ export default function Home() {
         messages: [],
         stream: stream,
         options: {
-            num_ctx: 8192,
+            num_ctx: 2048,
         },
     });
     const [isStreaming, setIsStreaming] = useState(false);
@@ -178,8 +178,8 @@ export default function Home() {
 
 
     return (
-        <main className="min-h-screen">
-            <div className="flex h-screen">
+        <main className="min-h-dvh">
+            <div className="flex h-dvh">
 
                 <section className="flex-1 flex flex-col">
                     
@@ -206,7 +206,7 @@ export default function Home() {
                 
                     <div
                         ref={scrollRef} 
-                        className="overflow-y-auto neo-grid bg-background px-3 py-3 space-y-3 md:px-10 md:space-y-6 md:pt-10 h-full"
+                        className="flex-1 min-h-0 overflow-y-auto neo-grid bg-background px-3 py-3 space-y-3 md:px-10 md:space-y-6 md:pt-10"
                     >
                         {!model && <ModelAlert />}
                         {chat.messages.map((message, key) => (
@@ -222,7 +222,7 @@ export default function Home() {
                         <div ref={bottomRef} />
                     </div>
 
-                    <footer className="bg-secondary-background border-t border-border px-6 py-4">
+                    <footer className="bg-secondary-background border-t border-border px-6 py-4 flex-shrink-0">
                         <form
                             className="flex items-center gap-3"
                             onSubmit={(e) => handleSubmit(e)}
@@ -237,7 +237,7 @@ export default function Home() {
                             />
 
                             <div className="-translate-y-[4px]">
-                                <Button type="submit" disabled={isStreaming}>Send</Button>
+                                <Button type="submit" disabled={isStreaming || !input.trim() || !model}>Send</Button>
                             </div>
                         </form>
                     </footer>
