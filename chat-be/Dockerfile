@@ -13,7 +13,7 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-RUN corepack enable && corepack prepare pnpm@latest --activate && pnpm exec tsc
+RUN npx tsc
 
 FROM base AS runner
 
