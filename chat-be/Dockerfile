@@ -22,7 +22,6 @@ WORKDIR /app
 ENV NODE_ENV=production
 
 COPY --from=deps /app/node_modules ./node_modules
-COPY --from=deps /root/.pnpm-store /root/.pnpm-store
 COPY --from=builder /app/dist ./dist
 COPY package.json pnpm-lock.yaml ./
 
