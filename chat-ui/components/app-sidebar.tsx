@@ -27,9 +27,11 @@ import {
 import { DeleteAlert } from "./delete-alert";
 import { RenameDialog } from "./rename-dialog";
 import { useState } from "react";
+import Logo from '@/public/logo.svg';
+import Image from "next/image";
 
 const data = {
-    einarSite: Globe,
+    einarSite: Logo,
     newChat: PlusCircle,
     tools: [
         {
@@ -109,7 +111,7 @@ export function AppSidebar() {
                         {storedChats?.map(chat => (
                             <SidebarMenuItem key={chat.id}>
                                 <SidebarMenuButton className="p-0 pl-2">
-                                    <div className="group/chat-row flex w-full h-full items-center justify-between min-w-0 space-x-2">
+                                    <div className="group/chat-row flex w-full h-full items-center justify-between min-w-0 space-x-8">
                                         <div
                                             className="min-w-0 w-full h-full overflow-hidden whitespace-nowrap text-xs text-left flex items-center"
                                             onClick={() => {
@@ -124,7 +126,7 @@ export function AppSidebar() {
                                             onOpenChange={(open) => setOpenDropdown(open ? chat.id : null)}
                                         >
                                             <DropdownMenuTrigger className="mr-2" asChild onClick={(e) => e.stopPropagation()}>
-                                                <div className="outline-none transition opacity-0 group-hover/chat-row:opacity-100">...</div>
+                                                <div className="outline-none transition md:opacity-0 group-hover/chat-row:opacity-100">...</div>
                                             </DropdownMenuTrigger>
                                             <DropdownMenuContent align="start">
                                                 <DropdownMenuItem
@@ -164,7 +166,7 @@ export function AppSidebar() {
                                 rel="noopener noreferrer"
                                 className="flex items-center gap-2 text-xs underline hover:opacity-70 transition mb-2"
                             >
-                                <data.einarSite size={16} strokeWidth={2} />
+                                <Image alt="" src={data.einarSite} height={16} />
                                 Checkout my other work
                             </a>
 

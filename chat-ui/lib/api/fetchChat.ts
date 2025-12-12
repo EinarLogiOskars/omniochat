@@ -1,14 +1,14 @@
 import { Chat } from "@/types/chat";
 import { BASE_API_URL } from "./api";
 
-export default async function fetchChat(request: Chat): Promise<Response>{
+export default async function fetchChat({ id, chat}: { id?: string | null, chat: Chat }): Promise<Response>{
     const url = BASE_API_URL + '/api/chat';
-    const reqBody = JSON.stringify(request);
+    const body = JSON.stringify({ id, ...chat });
     return await fetch(url, {
         method: 'POST',
         headers: {
             "Content-Type": "application/json"
         },
-        body: reqBody,
+        body
     });
 }

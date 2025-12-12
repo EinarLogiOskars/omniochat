@@ -1,28 +1,48 @@
+import { abortChat } from "@/lib/api/abortChat";
 import fetchChat from "@/lib/api/fetchChat";
 import { Chat, ChatMessage } from "@/types/chat";
+import { useState } from "react";
 
-type PageProps = {
-    request: Chat;
+type SendArgs = {
+    request: {
+        id?: string | null,
+        chat: Chat
+    };
     setIsStreaming: () => void;
     onChunk: (message: ChatMessage) => void;
 }
 
-export function useChatStream() {
+type AbortArgs = {
+    id?: string | null;
+    setIsStreaming: () => void;
+}
 
-    async function send({ request, setIsStreaming, onChunk }: PageProps) {
+export function useChatStream() {
+    const [isPending, setIsPending] = useState(false);
+
+
+    async function send({ request, setIsStreaming, onChunk }: SendArgs) {
+        setIsPending(true);
         const res = await fetchChat(request);
         const reader = res.body?.getReader();
         const decoder = new TextDecoder();
         if (!reader) return;
 
         let buffer = "";
+        let firstChunk = true;
 
         while (true) {
             const { done, value } = await reader.read();
             if (done) {
+                setIsPending(false);
                 setIsStreaming();
                 break;
             };
+
+            if (firstChunk) {
+                setIsPending(false);
+                firstChunk = false;
+            }
 
             buffer += decoder.decode(value, { stream: true });
             const lines = buffer.split("\n");
@@ -48,5 +68,15 @@ export function useChatStream() {
             }
         }
     }
-    return { send };
+
+    async function abort({ id, setIsStreaming}: AbortArgs) {
+        if (!id) return;
+        try {
+            await abortChat(id);
+        } finally {
+            setIsPending(false);
+            setIsStreaming();
+        }
+    }
+    return { send, abort, isPending };
 }
