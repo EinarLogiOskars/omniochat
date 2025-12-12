@@ -20,7 +20,6 @@ const initialChat: Chat = {
     messages: [],
     stream: true,
     options: { num_ctx: 2048 }
-    options: { num_ctx: 2048 }
 };
 
 export default function Home() {
@@ -41,7 +40,6 @@ export default function Home() {
         messages: [],
         stream: stream,
         options: {
-            num_ctx: 2048,
             num_ctx: 2048,
         },
     });
@@ -189,8 +187,6 @@ export default function Home() {
     return (
         <main className="min-h-dvh">
             <div className="flex h-dvh">
-        <main className="min-h-dvh">
-            <div className="flex h-dvh">
 
                 <section className="flex-1 flex flex-col">
                     
@@ -218,7 +214,6 @@ export default function Home() {
                     <div
                         ref={scrollRef} 
                         className="flex-1 min-h-0 overflow-y-auto neo-grid bg-background px-3 py-3 space-y-3 md:px-10 md:space-y-6 md:pt-10"
-                        className="flex-1 min-h-0 overflow-y-auto neo-grid bg-background px-3 py-3 space-y-3 md:px-10 md:space-y-6 md:pt-10"
                     >
                         {!model && <ModelAlert />}
                         {chat.messages.map((message, key) => (
@@ -237,7 +232,6 @@ export default function Home() {
                         <div ref={bottomRef} />
                     </div>
 
-                    <footer className="bg-secondary-background border-t border-border px-6 py-4 flex-shrink-0">
                     <footer className="bg-secondary-background border-t border-border px-6 py-4 flex-shrink-0">
                         <form
                             className="flex items-center gap-3"
