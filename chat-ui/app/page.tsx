@@ -71,7 +71,6 @@ export default function Home() {
         setModel(found.chat.model);
     }, [selectedChatId, storedChats])
 
-
     useEffect(() => {
         if (!storedChat) return;
         const updated = updateStoredChat(storedChat, chat);
@@ -79,14 +78,12 @@ export default function Home() {
         updateChat(updated);
     }, [isStreaming])
 
-
     useEffect(() => {
         setChat(prev => ({
             ...prev,
             model: model,
         }));
     }, [model])
-
 
     useEffect(() => {
         const el = scrollRef.current;
@@ -110,14 +107,12 @@ export default function Home() {
     }, [lastContent, isStreaming, autoScroll])
 
 
-
     const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
         if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault();
             e.currentTarget.form?.requestSubmit();
         }
     }
-
 
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -175,13 +170,13 @@ export default function Home() {
         setInput("");
     }
 
+
     const handleAbort = () => {
         abort({
             id: selectedChatId,
             setIsStreaming: () => setIsStreaming(false),
         });
     }
-
 
 
     return (
