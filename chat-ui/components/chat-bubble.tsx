@@ -4,6 +4,7 @@ import { ChatMessage } from "@/types/chat";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import { Skeleton } from "./ui/skeleton";
 
 type PageProps = {
     message: ChatMessage;
@@ -41,4 +42,26 @@ export function ChatBubble({ message, model }: PageProps) {
             </CardContent>
         </Card>
     )
+}
+
+type SkeletonProps = {
+    model?: string;
+}
+
+export function ChatBubbleSkeleton({ model }: SkeletonProps) {
+    
+    return (
+        <Card className="bg-secondary-background w-[300px]">
+            <CardHeader>
+                <CardTitle className="text-sm flex flex-col">
+                    <span>Omniochat</span>
+                    {model && <span className="text-xs text-neutral-600">({model})</span>}
+                </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-1">
+                <Skeleton className="h-5 sm:w-[250px] w-[100px]" />
+                <Skeleton className="h-5 sm:w-[220px] w-[100px]" />
+            </CardContent>
+        </Card>
+    )   
 }

@@ -1,6 +1,6 @@
 'use client';
 
-import { ChatBubble } from "@/components/chat-bubble";
+import { ChatBubble, ChatBubbleSkeleton } from "@/components/chat-bubble";
 import { ModelAlert } from "@/components/model-alert";
 import { Button } from "@/components/ui/button";
 import { Select, SelectGroup, SelectLabel, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
@@ -26,7 +26,7 @@ export default function Home() {
 
     const isMobile = useIsMobile();
     const { models, loading } = useModels();
-    const { send } = useChatStream();
+    const { send, abort, isPending } = useChatStream();
     const { storedChats, addChat, updateChat } = useStoredChatsContext();
     const { selectedChatId, setSelectedChatId } = useChatSelection();
 
@@ -151,7 +151,7 @@ export default function Home() {
 
 
         send({
-            request: nextChat,
+            request: { id: selectedChatId, chat: nextChat },
             setIsStreaming: () => setIsStreaming(false),
             onChunk: (message: ChatMessage) => {
                 setChat(prev => {
@@ -173,6 +173,13 @@ export default function Home() {
         });
         
         setInput("");
+    }
+
+    const handleAbort = () => {
+        abort({
+            id: selectedChatId,
+            setIsStreaming: () => setIsStreaming(false),
+        });
     }
 
 
@@ -219,6 +226,9 @@ export default function Home() {
                                 <ChatBubble message={message} model={model} />
                             </div>
                         ))}
+                        {isPending && (
+                            <ChatBubbleSkeleton model={model} />
+                        )}
                         <div ref={bottomRef} />
                     </div>
 
@@ -236,9 +246,15 @@ export default function Home() {
                                 onKeyDown={handleKeyDown}
                             />
 
-                            <div className="-translate-y-[4px]">
-                                <Button type="submit" disabled={isStreaming || !input.trim() || !model}>Send</Button>
-                            </div>
+                            {isStreaming ? (
+                                <div className="-translate-y-[4px]">
+                                    <Button type="button" className="w-[100px]" onClick={() => handleAbort()}>Stop</Button>
+                                </div>
+                            ) : (
+                                <div className="-translate-y-[4px]">
+                                    <Button type="submit" className="w-[100px]" disabled={isStreaming || !model}>Send</Button>
+                                </div>
+                            )}
                         </form>
                     </footer>
                     

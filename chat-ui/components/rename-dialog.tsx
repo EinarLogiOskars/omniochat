@@ -53,7 +53,7 @@ export function RenameDialog({ id }: Props) {
             <DialogTrigger className="w-full" asChild onClick={(e) => e.stopPropagation()}>
                 <Button className="border-none w-full cursor-pointer hover:brightness-120" variant={"noShadow"}>Rename</Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[300px]">
+            <DialogContent className="sm:w-[300px] md:w-[400px]">
                 <form onSubmit={handleSubmit}>
                     <DialogHeader>
                         <DialogTitle>Rename chat</DialogTitle>
@@ -61,7 +61,7 @@ export function RenameDialog({ id }: Props) {
                             Please choose a new name for the chat.
                         </DialogDescription>
                     </DialogHeader>
-                    <div>
+                    <div className="mt-3 mb-3">
                         <Label htmlFor="name">Chat name</Label>
                         <Input id="name" name="name" value={newName} onChange={(e) => setNewName(e.target.value)} />
                     </div>
